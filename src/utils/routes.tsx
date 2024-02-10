@@ -4,6 +4,7 @@ import FullLayout from "../components/layouts/fullLayout";
 import UserLogin from "@/pages/user/userLogin";
 import NewUser from "@/pages/user/newUser";
 import UserHome from "@/pages/user/userHome";
+import AuthLayout from "@/components/layouts/authLayout";
 
 const Routes = [
   {
@@ -23,14 +24,14 @@ const Routes = [
   },
   {
     path: "/login",
-    element: <UserLogin />,
+    element: <AuthLayout />,
     children: [
       {
-        path: "/",
+        path: "*",
         element: <UserLogin />,
       },
       {
-        path: "/newuser",
+        path: "newuser",
         element: <NewUser />,
       },
     ],
