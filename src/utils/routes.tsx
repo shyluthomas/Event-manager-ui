@@ -32,7 +32,7 @@ const Routes = [
     element: <AuthLayout />,
     children: [
       {
-        path: "*",
+        path: "/login",
         element: <UserLogin />,
       },
       {
