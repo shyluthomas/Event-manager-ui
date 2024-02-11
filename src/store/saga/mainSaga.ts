@@ -1,14 +1,20 @@
-import { 
-    // call, put, 
-    takeEvery } from 'redux-saga/effects'
-import * as user  from '../reducers/userReducer';
+import {
+  // call,
+  put,
+  takeEvery,
+} from "redux-saga/effects";
+import * as user from "../reducers/userReducer";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-function* fetchUser(action: any) {
+function* _getAuthCheck(action: any) {
   try {
-     yield console.log('first', action)
+    // Write the service for auth check using axios
+    // set token locally as well
+    yield console.log("first", action);
+    //setting auth from the api response
+    yield put(user.setAuth({}));
   } catch (e) {
-    console.log('first')
+    console.log("first");
   }
 }
 
@@ -17,9 +23,7 @@ function* fetchUser(action: any) {
   Allows concurrent fetches of user.
 */
 function* mainSaga() {
-  yield takeEvery(user.auth, fetchUser)
+  yield takeEvery(user.getAuthCheck, _getAuthCheck);
 }
 
-
-
-export default mainSaga
+export default mainSaga;

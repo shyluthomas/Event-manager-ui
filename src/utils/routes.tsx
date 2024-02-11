@@ -5,11 +5,16 @@ import UserLogin from "@/pages/user/userLogin";
 import NewUser from "@/pages/user/newUser";
 import UserHome from "@/pages/user/userHome";
 import AuthLayout from "@/components/layouts/authLayout";
+import AuthGuard from "@/components/authGuard/authGuard";
 
 const Routes = [
   {
     path: "/",
-    element: <FullLayout />,
+    element: (
+      <AuthGuard>
+        <FullLayout />
+      </AuthGuard>
+    ),
     children: [
       {
         path: "/",
