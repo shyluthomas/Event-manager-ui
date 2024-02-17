@@ -1,11 +1,11 @@
-import { Navigate } from "react-router-dom";
-import UserList from "@/pages/user/userList";
+import AuthGuard from "@/components/authGuard/authGuard";
+import AuthLayout from "@/components/layouts/authLayout";
 import FullLayout from "../components/layouts/fullLayout";
-import UserLogin from "@/pages/user/userLogin";
+import { Navigate } from "react-router-dom";
 import NewUser from "@/pages/user/newUser";
 import UserHome from "@/pages/user/userHome";
-import AuthLayout from "@/components/layouts/authLayout";
-import AuthGuard from "@/components/authGuard/authGuard";
+import UserList from "@/pages/user/userList";
+import UserLogin from "@/pages/user/userLogin";
 
 const Routes = [
   {

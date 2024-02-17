@@ -1,9 +1,9 @@
+import * as user from "../reducers/userReducer";
+
 import {
-  // call,
   put,
   takeEvery,
 } from "redux-saga/effects";
-import * as user from "../reducers/userReducer";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* _getAuthCheck(action: any) {
