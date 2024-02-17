@@ -10,8 +10,7 @@ const UserLogin = (): JSX.Element => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log("first", data);
+  const onSubmit = () => {
     reset({
       email: "",
       password: "",

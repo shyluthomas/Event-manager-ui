@@ -1,3 +1,5 @@
+import * as Yup from "yup";
+
 import {
   Card,
   CardContent,
@@ -11,17 +13,40 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function NewUser() {
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Name is required"),
+    email: Yup.string()
+      .email("Email must be valid")
+      .required("Email is required"),
+    language: Yup.string().required("Language is required"),
+    phone: Yup.string().required("Phone is required"),
+    address: Yup.string().required("Address is required"),
+    sex: Yup.string().required("Sex is required"),
+    dob: Yup.string().required("DOB is required"),
+    avatar: Yup.string().required("Avatar is required"),
+    roleId: Yup.number(),
+    username: Yup.string().required("User Name is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
+    confirmpassword: Yup.string()
+      .required("Confirm Password is required")
+      .oneOf([Yup.ref("password")], "Passwords must match"),
+  });
+
+  const formOptions = { resolver: yupResolver(validationSchema) };
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm(formOptions);
 
-  const submitLogin = (data: any) => {
-    console.log("data", data);
+  const submitLogin = () => {
     reset({
       name: "",
       email: "",
@@ -32,8 +57,9 @@ export default function NewUser() {
       sex: "",
       dob: "",
       avatar: "",
-      roleId: "",
+      roleId: undefined,
       username: "",
+      confirmpassword: "",
     });
   };
 
@@ -81,11 +107,23 @@ export default function NewUser() {
                   type="password"
                   {...register("password", { required: true })}
                 />
-                {errors.password && errors.password.type === "required" && (
-                  <p className="text-xs text-rose-500 text-left">
-                    Password is required
-                  </p>
-                )}
+
+                <p className="text-xs text-rose-500 text-left">
+                  {errors.password?.message}
+                </p>
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="confirmpassword">Confirm Password</Label>
+                <Input
+                  id="confirmpassword"
+                  placeholder="Confirm Password"
+                  type="password"
+                  {...register("confirmpassword", { required: true })}
+                />
+
+                <p className="text-xs text-rose-500 text-left">
+                  {errors.confirmpassword?.message}
+                </p>
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="email">Email</Label>
@@ -94,19 +132,11 @@ export default function NewUser() {
                   placeholder="Email"
                   {...register("email", {
                     required: true,
-                    pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
                   })}
                 />
-                {errors.email && errors.email.type === "required" && (
-                  <p className="text-xs text-rose-500 text-left">
-                    Email is required
-                  </p>
-                )}
-                {errors.email && errors.email.type === "pattern" && (
-                  <p className="text-xs text-rose-500 text-left">
-                    Email is not valid
-                  </p>
-                )}
+                <p className="text-xs text-rose-500 text-left">
+                  {errors.email?.message}
+                </p>
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label htmlFor="avatar">Avatar</Label>
