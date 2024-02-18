@@ -6,6 +6,8 @@ import NewUser from "@/pages/user/newUser";
 import UserHome from "@/pages/user/userHome";
 import UserList from "@/pages/user/userList";
 import UserLogin from "@/pages/user/userLogin";
+import Dashboard from "@/pages/dashboard/dashboard";
+import Events from "@/pages/events/events";
 
 const Routes = [
   {
@@ -23,6 +25,14 @@ const Routes = [
       {
         path: "userlist",
         element: <UserList />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "events",
+        element: <Events />,
       },
       { path: "*", element: <Navigate to="/login" /> },
     ],
