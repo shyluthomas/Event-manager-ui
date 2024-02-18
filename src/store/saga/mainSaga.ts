@@ -1,3 +1,4 @@
+import { userService } from "@/services";
 import * as user from "../reducers/userReducer";
 
 import {
@@ -18,12 +19,25 @@ function* _getAuthCheck(action: any) {
   }
 }
 
+function* _setNewUser(action: any): any {
+  try {
+    const userData = action.payload;
+    const newUser:any = yield userService.newUser(userData);
+    //setting auth from the api response
+    yield put(user.setUserCreation({status:'sucess', user: newUser}));
+  } catch (e) {
+    yield put(user.setUserCreation({status:'Failed', user: null}));
+    console.log("first");
+  }
+}
+
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
   Allows concurrent fetches of user.
 */
 function* mainSaga() {
   yield takeEvery(user.getAuthCheck, _getAuthCheck);
+  yield takeEvery(user.setNewUser, _setNewUser);
 }
 
 export default mainSaga;

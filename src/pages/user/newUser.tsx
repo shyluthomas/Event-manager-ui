@@ -14,8 +14,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { setNewUser } from "@/store/reducers/userReducer";
 
 export default function NewUser() {
+
+const dispatch = useAppDispatch();
+const createdUser = useAppSelector((state)=> state.userReducer.userCreation);
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string()
@@ -46,7 +51,11 @@ export default function NewUser() {
     formState: { errors },
   } = useForm(formOptions);
 
-  const submitLogin = () => {
+  const submitLogin = (data:any) => {
+
+    console.log(data);
+    dispatch(setNewUser(data));
+
     reset({
       name: "",
       email: "",
@@ -70,6 +79,7 @@ export default function NewUser() {
           <CardHeader>
             <CardTitle>Sign Up</CardTitle>
             <CardDescription>New User registeration</CardDescription>
+            <div>{createdUser.status}</div>
           </CardHeader>
           <CardContent>
             <div className="grid w-full items-center gap-4">
