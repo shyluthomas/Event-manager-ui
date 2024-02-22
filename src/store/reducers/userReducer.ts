@@ -4,7 +4,8 @@ const initialState = {
   auth: { isAuthenticated: false, user: null },
   authCheck: { username: null, password: null },
   newUser: {},
-  userCreation: {status:'', user: {}}
+  userCreation: { status: "", user: {} },
+  userLogin: { username: "", password: "" },
 };
 
 export const UserSlice = createSlice({
@@ -18,12 +19,16 @@ export const UserSlice = createSlice({
       state.auth = action.payload;
     },
     setNewUser: (state, action) => {
-        state.newUser = action.payload;
+      state.newUser = action.payload;
     },
     setUserCreation: (state, action) => {
-        state.userCreation = action.payload;
+      state.userCreation = action.payload;
+    },
+    setLogin: (state, action) => {
+      state.userLogin = action.payload;
     },
   },
 });
-export const { setAuth, getAuthCheck ,setNewUser, setUserCreation} = UserSlice.actions;
+export const { setAuth, getAuthCheck, setNewUser, setUserCreation, setLogin } =
+  UserSlice.actions;
 export default UserSlice.reducer;

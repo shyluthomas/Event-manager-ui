@@ -8,19 +8,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { User } from "@/types";
 import { setNewUser } from "@/store/reducers/userReducer";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export default function NewUser() {
-
-const dispatch = useAppDispatch();
-const createdUser = useAppSelector((state)=> state.userReducer.userCreation);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const createdUser = useAppSelector((state) => state.userReducer.userCreation);
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string()
@@ -51,30 +54,15 @@ const createdUser = useAppSelector((state)=> state.userReducer.userCreation);
     formState: { errors },
   } = useForm(formOptions);
 
-  const submitLogin = (data:any) => {
-
-    console.log(data);
+  const submitLogin = (data: User) => {
     dispatch(setNewUser(data));
-
-    reset({
-      name: "",
-      email: "",
-      password: "",
-      language: "",
-      phone: "",
-      address: "",
-      sex: "",
-      dob: "",
-      avatar: "",
-      roleId: undefined,
-      username: "",
-      confirmpassword: "",
-    });
+    reset();
+    toast("Event has been created.");
   };
 
   return (
     <div className="flex mt-16 justify-center items-center">
-      <Card className="w-[450px]">
+      <Card className="w-[550px]">
         <form onSubmit={handleSubmit(submitLogin)}>
           <CardHeader>
             <CardTitle>Sign Up</CardTitle>
@@ -233,7 +221,7 @@ const createdUser = useAppSelector((state)=> state.userReducer.userCreation);
                 )}
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="roleId">Role ID</Label>
+                {/* <Label htmlFor="roleId">Role ID</Label> */}
                 <Input
                   id="roleId"
                   placeholder="Role"
@@ -245,7 +233,14 @@ const createdUser = useAppSelector((state)=> state.userReducer.userCreation);
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <Button variant="outline">Cancel</Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              Login
+            </Button>
             <Button type="submit">Submit</Button>
           </CardFooter>
         </form>
