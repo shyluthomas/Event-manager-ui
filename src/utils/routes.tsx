@@ -49,10 +49,6 @@ const Routes = [
         path: "newuser",
         element: <NewUser />,
       },
-      {
-        path: "/login/dash",
-        element: <FullLayout />,
-      },
     ],
   },
 ];

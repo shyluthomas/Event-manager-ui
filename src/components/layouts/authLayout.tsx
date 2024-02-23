@@ -8,12 +8,7 @@ import { useNavigate } from "react-router-dom";
 const AuthLayout = (): JSX.Element => {
   const navigate = useNavigate();
   return (
-    <div
-      style={{
-        backgroundColor: "black",
-        height: "fit-content",
-      }}
-    >
+    <div className="bg-black h-fit">
       {/* <h1>Auth Layout</h1> */}
 
       <Menubar className="flex justify-between mx-auto h-20 bg-stone-950 opacity-50 sticky top-0">

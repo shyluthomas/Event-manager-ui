@@ -23,7 +23,7 @@ function* _setNewUser(action: UserAction): any {
     const userData = action.payload;
     const newUser = yield userService.newUser(userData);
     //setting auth from the api response
-    yield put(user.setUserCreation({ status: "sucess", user: newUser }));
+    yield put(user.setUserCreation({ status: "success", user: newUser }));
   } catch (e) {
     yield put(user.setUserCreation({ status: "Failed", user: null }));
     console.log("first");

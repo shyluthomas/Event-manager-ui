@@ -24,7 +24,7 @@ const UserLogin = (): JSX.Element => {
   //   navigate("/login/dash");
   // }, [loggedIn]);
   if (loggedIn) {
-    navigate("/login/dash");
+    navigate("/dashboard");
   }
   const {
     register,

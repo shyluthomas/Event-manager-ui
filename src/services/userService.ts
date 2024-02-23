@@ -1,4 +1,4 @@
-import { APIResponse, User } from "@/types";
+import { APIResponse, LoginUser, User } from "@/types";
 import axiosAuth, { axiosNonAuth } from "@/utils/axios";
 
 const api = import.meta.env.VITE_API_BASE_URL;
@@ -8,7 +8,7 @@ export const userService = {
     const response = await axiosNonAuth.post(`${api}/user`, payload);
     return response;
   },
-  loginUser: async (payload: any): Promise<APIResponse> => {
+  loginUser: async (payload: LoginUser): Promise<APIResponse> => {
     const response = await axiosAuth.post(`${api}/auth`, payload);
     return response;
   },
