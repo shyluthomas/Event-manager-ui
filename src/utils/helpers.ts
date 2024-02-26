@@ -16,6 +16,9 @@ const helpers = {
       return false;
     }
   },
+  removeAuthToken: () => {
+    sessionStorage.removeItem("accessToken");
+  },
 };
 
 export default helpers;

@@ -1,15 +1,19 @@
-import { useAppSelector } from "@/hooks/hooks";
+import helpers from "@/utils/helpers";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const AuthGuard = (props: any): JSX.Element => {
-  const auth = useAppSelector((state) => state.userReducer.auth);
   const navigate = useNavigate();
+  const token = helpers.getAuthToken();
+  // if (token) {
+  //   dispatch(setAuth({ isAuthenticated: true, user: null }));
+  // }
   useEffect(() => {
-    if (!auth.isAuthenticated) {
+    console.log("token");
+    if (!token) {
       navigate("/login");
     }
-  }, [auth]);
+  }, [navigate]);
 
   return <>{props.children}</>;
 };

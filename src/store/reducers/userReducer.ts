@@ -6,6 +6,7 @@ const initialState = {
   newUser: {},
   userCreation: { status: "", user: {} },
   userLogin: { username: "", password: "" },
+  dialog: { status: false, message: "" },
 };
 
 export const UserSlice = createSlice({
@@ -27,8 +28,17 @@ export const UserSlice = createSlice({
     setLogin: (state, action) => {
       state.userLogin = action.payload;
     },
+    setDialog: (state, action) => {
+      state.dialog = action.payload;
+    },
   },
 });
-export const { setAuth, getAuthCheck, setNewUser, setUserCreation, setLogin } =
-  UserSlice.actions;
+export const {
+  setAuth,
+  getAuthCheck,
+  setNewUser,
+  setUserCreation,
+  setLogin,
+  setDialog,
+} = UserSlice.actions;
 export default UserSlice.reducer;

@@ -19,6 +19,10 @@ const UserLogin = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const loggedUser = useAppSelector((state) => state.userReducer.auth);
   const loggedIn = loggedUser.isAuthenticated;
+  const username = useAppSelector((state) => {
+    state.userReducer.userLogin;
+  });
+  console.log("username", username);
   const navigate = useNavigate();
   // useEffect(() => {
   //   navigate("/login/dash");
@@ -82,6 +86,11 @@ const UserLogin = (): JSX.Element => {
                         </p>
                       )}
                   </div>
+                  {!loggedIn && (
+                    <p className="text-xs text-rose-500 text-left">
+                      Invalid username or password
+                    </p>
+                  )}
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between">

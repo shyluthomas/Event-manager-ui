@@ -13,9 +13,9 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ModalHOC from "@/components/layouts/ModalHOC";
 import { User } from "@/types";
 import { setNewUser } from "@/store/reducers/userReducer";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,7 +23,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 export default function NewUser() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const createdUser = useAppSelector((state) => state.userReducer.userCreation);
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string()
@@ -46,7 +45,6 @@ export default function NewUser() {
   });
 
   const formOptions = { resolver: yupResolver(validationSchema) };
-
   const {
     register,
     handleSubmit,
@@ -56,8 +54,8 @@ export default function NewUser() {
 
   const submitLogin = (data: User) => {
     dispatch(setNewUser(data));
+
     reset();
-    toast("Event has been created.");
   };
 
   return (
@@ -67,7 +65,7 @@ export default function NewUser() {
           <CardHeader>
             <CardTitle>Sign Up</CardTitle>
             <CardDescription>New User registeration</CardDescription>
-            <div>{createdUser.status}</div>
+            <ModalHOC />
           </CardHeader>
           <CardContent>
             <div className="grid w-full items-center gap-4">

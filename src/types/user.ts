@@ -31,3 +31,8 @@ export type LoginUser = {
   username: string;
   password: string;
 };
+
+export type ModalProps = {
+  status: boolean;
+  message: string;
+};

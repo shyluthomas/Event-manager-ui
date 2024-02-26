@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Menubar, MenubarMenu, MenubarTrigger } from "../ui/menubar";
 
 import { Outlet } from "react-router-dom";
-import { Toaster } from "../ui/sonner";
+// import { Toaster } from "../ui/sonner";
 import { useNavigate } from "react-router-dom";
 
 const AuthLayout = (): JSX.Element => {
@@ -31,9 +31,8 @@ const AuthLayout = (): JSX.Element => {
           </MenubarTrigger>
         </MenubarMenu>
       </Menubar>
-      <Toaster />
       <Outlet></Outlet>
-      <footer className="text-white text-center  p-8">
+      <footer className="text-white text-center p-8">
         <p>Copyright 2024 All rights reserved</p>
       </footer>
     </div>
