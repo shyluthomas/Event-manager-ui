@@ -9,7 +9,6 @@ const AuthGuard = (props: any): JSX.Element => {
   //   dispatch(setAuth({ isAuthenticated: true, user: null }));
   // }
   useEffect(() => {
-    console.log("token");
     if (!token) {
       navigate("/login");
     }

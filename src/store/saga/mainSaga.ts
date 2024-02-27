@@ -44,7 +44,6 @@ function* _setLogin(action: UserAction): any {
     }
   } catch (e) {
     yield put(user.setAuth({ isAuthenticated: false }));
-    console.log("first");
   }
 }
 function* _logOut() {
