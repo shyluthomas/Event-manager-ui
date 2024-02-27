@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@radix-ui/react-menubar";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
-import helpers from "@/utils/helpers";
-import { useAppSelector } from "@/hooks/hooks";
+import { logOut } from "@/store/reducers/userReducer";
 
 const FullLayout = (): JSX.Element => {
   const user = useAppSelector((state) => state.userReducer.userLogin);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   return (
     <div className="bg-black h-fit">
@@ -43,7 +44,7 @@ const FullLayout = (): JSX.Element => {
                 <DropdownMenuItem>Team</DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    helpers.removeAuthToken();
+                    dispatch(logOut());
                     navigate("/login");
                   }}
                 >

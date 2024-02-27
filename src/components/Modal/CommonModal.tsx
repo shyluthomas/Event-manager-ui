@@ -14,8 +14,6 @@ type CommonModalProps = { message: ModalProps };
 
 export default function CommonModal({ message }: CommonModalProps) {
   const [dialog, setDialog] = useState(message.status);
-  const status = message.status;
-  console.log("modalll", status);
   return (
     <div>
       <AlertDialog open={dialog}>

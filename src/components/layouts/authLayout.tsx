@@ -1,16 +1,15 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Menubar, MenubarMenu, MenubarTrigger } from "../ui/menubar";
 
+import ModalHOC from "./ModalHOC";
 import { Outlet } from "react-router-dom";
-// import { Toaster } from "../ui/sonner";
 import { useNavigate } from "react-router-dom";
 
 const AuthLayout = (): JSX.Element => {
   const navigate = useNavigate();
   return (
     <div className="bg-black h-fit">
-      {/* <h1>Auth Layout</h1> */}
-
+      <ModalHOC />
       <Menubar className="flex justify-between mx-auto h-20 bg-stone-950 opacity-50 sticky top-0">
         <MenubarMenu>
           <Avatar>

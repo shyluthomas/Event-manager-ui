@@ -31,6 +31,7 @@ export const UserSlice = createSlice({
     setDialog: (state, action) => {
       state.dialog = action.payload;
     },
+    logOut: () => {},
   },
 });
 export const {
@@ -40,5 +41,6 @@ export const {
   setUserCreation,
   setLogin,
   setDialog,
+  logOut,
 } = UserSlice.actions;
 export default UserSlice.reducer;

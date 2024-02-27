@@ -25,10 +25,9 @@ function* _setNewUser(action: UserAction): any {
     const newUser = yield userService.newUser(userData);
     //setting auth from the api response
     yield put(user.setUserCreation({ status: "success", user: newUser }));
-    yield put(user.setDialog({ status: true, message: "user created" }));
+    yield put(user.setDialog({ status: true, message: "User created" }));
   } catch (e) {
     yield put(user.setUserCreation({ status: "Failed", user: null }));
-    console.log("first");
   }
 }
 
@@ -38,7 +37,7 @@ function* _setLogin(action: UserAction): any {
     const response = yield userService.loginUser(userData);
     //setting auth from the api response
     if (response.status === 200) {
-      helpers.setAuthToken(response.data.token);
+      yield helpers.setAuthToken(response.data.token);
       yield put(user.setAuth({ isAuthenticated: true, user: response.data }));
     } else {
       yield put(user.setAuth({ isAuthenticated: false }));
@@ -48,6 +47,10 @@ function* _setLogin(action: UserAction): any {
     console.log("first");
   }
 }
+function* _logOut() {
+  yield helpers.removeAuthToken();
+  yield put(user.setDialog({ status: true, message: "Logged out" }));
+}
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
   Allows concurrent fetches of user.
@@ -56,6 +59,7 @@ function* mainSaga() {
   yield takeEvery(user.getAuthCheck, _getAuthCheck);
   yield takeEvery(user.setNewUser, _setNewUser);
   yield takeEvery(user.setLogin, _setLogin);
+  yield takeEvery(user.logOut, _logOut);
 }
 
 export default mainSaga;

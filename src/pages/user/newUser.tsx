@@ -8,14 +8,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ModalHOC from "@/components/layouts/ModalHOC";
 import { User } from "@/types";
 import { setNewUser } from "@/store/reducers/userReducer";
+import { useAppDispatch } from "@/hooks/hooks";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -65,7 +64,6 @@ export default function NewUser() {
           <CardHeader>
             <CardTitle>Sign Up</CardTitle>
             <CardDescription>New User registeration</CardDescription>
-            <ModalHOC />
           </CardHeader>
           <CardContent>
             <div className="grid w-full items-center gap-4">
@@ -219,7 +217,6 @@ export default function NewUser() {
                 )}
               </div>
               <div className="flex flex-col space-y-1.5">
-                {/* <Label htmlFor="roleId">Role ID</Label> */}
                 <Input
                   id="roleId"
                   placeholder="Role"

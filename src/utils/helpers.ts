@@ -16,8 +16,8 @@ const helpers = {
       return false;
     }
   },
-  removeAuthToken: () => {
-    sessionStorage.removeItem("accessToken");
+  removeAuthToken: async () => {
+    await sessionStorage.removeItem("accessToken");
   },
 };
 

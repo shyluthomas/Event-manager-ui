@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setLogin } from "@/store/reducers/userReducer";
-// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -19,14 +18,7 @@ const UserLogin = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const loggedUser = useAppSelector((state) => state.userReducer.auth);
   const loggedIn = loggedUser.isAuthenticated;
-  const username = useAppSelector((state) => {
-    state.userReducer.userLogin;
-  });
-  console.log("username", username);
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   navigate("/login/dash");
-  // }, [loggedIn]);
   if (loggedIn) {
     navigate("/dashboard");
   }
