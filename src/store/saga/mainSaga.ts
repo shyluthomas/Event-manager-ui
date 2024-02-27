@@ -1,10 +1,10 @@
-import { userService } from "@/services";
 import * as user from "../reducers/userReducer";
 
-import {
-  put,
-  takeEvery,
-} from "redux-saga/effects";
+import { put, takeEvery } from "redux-saga/effects";
+
+import { UserAction } from "@/types/user";
+import helpers from "@/utils/helpers";
+import { userService } from "@/services";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* _getAuthCheck(action: any) {
@@ -19,18 +19,36 @@ function* _getAuthCheck(action: any) {
   }
 }
 
-function* _setNewUser(action: any): any {
+function* _setNewUser(action: UserAction): any {
   try {
     const userData = action.payload;
-    const newUser:any = yield userService.newUser(userData);
+    const newUser = yield userService.newUser(userData);
     //setting auth from the api response
-    yield put(user.setUserCreation({status:'sucess', user: newUser}));
+    yield put(user.setUserCreation({ status: "success", user: newUser }));
+    yield put(user.setDialog({ status: true, message: "User created" }));
   } catch (e) {
-    yield put(user.setUserCreation({status:'Failed', user: null}));
-    console.log("first");
+    yield put(user.setUserCreation({ status: "Failed", user: null }));
   }
 }
 
+function* _setLogin(action: UserAction): any {
+  try {
+    const userData = action.payload;
+    const response = yield userService.loginUser(userData);
+    //setting auth from the api response
+    if (response.status === 200) {
+      yield helpers.setAuthToken(response.data.token);
+      yield put(user.setAuth({ isAuthenticated: true, user: response.data }));
+    } else {
+      yield put(user.setAuth({ isAuthenticated: false }));
+    }
+  } catch (e) {
+    yield put(user.setAuth({ isAuthenticated: false }));
+  }
+}
+function* _logOut() {
+  yield helpers.removeAuthToken();
+}
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
   Allows concurrent fetches of user.
@@ -38,6 +56,8 @@ function* _setNewUser(action: any): any {
 function* mainSaga() {
   yield takeEvery(user.getAuthCheck, _getAuthCheck);
   yield takeEvery(user.setNewUser, _setNewUser);
+  yield takeEvery(user.setLogin, _setLogin);
+  yield takeEvery(user.logOut, _logOut);
 }
 
 export default mainSaga;

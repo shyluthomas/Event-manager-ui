@@ -1,13 +1,13 @@
 import AuthGuard from "@/components/authGuard/authGuard";
 import AuthLayout from "@/components/layouts/authLayout";
+import Dashboard from "@/pages/dashboard/dashboard";
+import Events from "@/pages/events/events";
 import FullLayout from "../components/layouts/fullLayout";
 import { Navigate } from "react-router-dom";
 import NewUser from "@/pages/user/newUser";
 import UserHome from "@/pages/user/userHome";
 import UserList from "@/pages/user/userList";
 import UserLogin from "@/pages/user/userLogin";
-import Dashboard from "@/pages/dashboard/dashboard";
-import Events from "@/pages/events/events";
 
 const Routes = [
   {

@@ -1,8 +1,27 @@
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { setLogin } from "@/store/reducers/userReducer";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const UserLogin = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const loggedUser = useAppSelector((state) => state.userReducer.auth);
+  const loggedIn = loggedUser.isAuthenticated;
+  const navigate = useNavigate();
+  if (loggedIn) {
+    navigate("/dashboard");
+  }
   const {
     register,
     handleSubmit,
@@ -10,59 +29,70 @@ const UserLogin = (): JSX.Element => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = () => {
-    reset({
-      email: "",
-      password: "",
-    });
+  const onSubmit = (data: any) => {
+    dispatch(setLogin(data));
+    reset();
   };
 
   return (
-    <div className="flex justify-center mt-54">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid gap-13 h-80 w-64 p-4 mt-5 rounded-lg bg-blue-50">
-          <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-            User Login
-          </h3>
-
-          <Input
-            type="text"
-            placeholder="User name"
-            {...register("email", {
-              required: true,
-              pattern: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
-            })}
-            name="email"
-          ></Input>
-          {errors.email && errors.email.type === "required" && (
-            <p className="text-xs text-rose-500 text-left">Email is required</p>
-          )}
-          {errors.email && errors.email.type === "pattern" && (
-            <p className="text-xs text-rose-500 text-left">
-              Email is not valid
-            </p>
-          )}
-          <Input
-            type="password"
-            placeholder="Password"
-            {...register("password", { required: true, minLength: 6 })}
-            name="password"
-          ></Input>
-          {errors.password && errors.password.type === "required" && (
-            <p className="text-xs text-rose-500 text-left">
-              Password is required
-            </p>
-          )}
-          {errors.password && errors.password.type === "minLength" && (
-            <p className="text-xs text-rose-500 text-left">
-              Password should be atleast 6 chars long
-            </p>
-          )}
-          <Button className="bg-blue-500">Login</Button>
-          <Button className="bg-blue-500">Sign Up</Button>
+    <>
+      <div className="h-screen">
+        <div className="flex mt-16 justify-center items-center">
+          <Card className="w-[550px]">
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <CardHeader>
+                <CardTitle>Login</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid w-full items-center gap-4">
+                  <div className="flex flex-col space-y-1.5">
+                    <Label htmlFor="email">User Name</Label>
+                    <Input
+                      id="email"
+                      placeholder="User Name"
+                      {...register("username", { required: true })}
+                    />
+                    {errors.username && errors.username.type === "required" && (
+                      <p className="text-xs text-rose-500 text-left">
+                        User Name is required
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col space-y-1.5">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                      id="password"
+                      placeholder="Password"
+                      type="password"
+                      {...register("password", { required: true })}
+                    />
+                    {errors.password && errors.password.type === "required" && (
+                      <p className="text-xs text-rose-500 text-left">
+                        Password is required
+                      </p>
+                    )}
+                    {errors.password &&
+                      errors.password.type === "minLength" && (
+                        <p className="text-xs text-rose-500 text-left">
+                          Password should be atleast 6 chars long
+                        </p>
+                      )}
+                  </div>
+                  {!loggedIn && (
+                    <p className="text-xs text-rose-500 text-left">
+                      Invalid username or password
+                    </p>
+                  )}
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button type="submit">Login</Button>
+              </CardFooter>
+            </form>
+          </Card>
         </div>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 
