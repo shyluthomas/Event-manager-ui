@@ -48,7 +48,6 @@ function* _setLogin(action: UserAction): any {
 }
 function* _logOut() {
   yield helpers.removeAuthToken();
-  yield put(user.setDialog({ status: true, message: "Logged out" }));
 }
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
