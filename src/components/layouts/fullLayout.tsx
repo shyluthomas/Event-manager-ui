@@ -8,14 +8,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@radix-ui/react-menubar";
 import { Outlet, useNavigate } from "react-router-dom";
+import { getProfile, logOut } from "@/store/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
-import { logOut } from "@/store/reducers/userReducer";
+import { useEffect } from "react";
 
 const FullLayout = (): JSX.Element => {
   const user = useAppSelector((state) => state.userReducer.userLogin);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, []);
+
+  // const data2 = useAppSelector((state) => state.userReducer.getProfile);
+
+  // const ownerId = data2.profile.data.user.id;
   return (
     <div className="bg-black h-fit">
       <Menubar className="flex justify-between mx-auto h-20 bg-stone-950 sticky top-0">
@@ -27,7 +36,12 @@ const FullLayout = (): JSX.Element => {
             <MenubarTrigger className="text-white text-xl p-6">
               DASHBOARD
             </MenubarTrigger>
-            <MenubarTrigger className="text-white text-xl p-6">
+            <MenubarTrigger
+              className="text-white text-xl p-6"
+              onClick={() => {
+                navigate("event");
+              }}
+            >
               EVENTS
             </MenubarTrigger>
           </div>

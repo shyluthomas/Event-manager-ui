@@ -31,7 +31,7 @@ const Routes = [
         element: <Dashboard />,
       },
       {
-        path: "events",
+        path: "event",
         element: <Events />,
       },
       { path: "*", element: <Navigate to="/login" /> },
