@@ -57,9 +57,6 @@ function* _logOut() {
 }
 
 function* _getEventFetch(): any {
-  // try{
-  // yield put(user.updateEventData({ event: "", loading: true }));
-  console.log("hello===fetch");
   const response = yield userService.eventDetails();
 
   if (response.status === 200) {
@@ -68,21 +65,14 @@ function* _getEventFetch(): any {
 }
 
 function* _createEvent(action: EventCreation): any {
-  console.log("create saga is trigggered");
   const eventData = action.payload;
-  console.log("event saga", eventData);
   const response = yield userService.createEvent(eventData);
-  console.log("sagaresponse", response);
   if (response.status === 201) {
+    yield put(
+      user.setMessage({ status: true, body: "New Task has been created.." })
+    );
     yield put(user.getEventFetch(true));
-    yield put(user.createEvent({ loading: false, event: response }));
-    yield put(user.getEventFetch(true));
-    const responseEvent = yield userService.eventDetails();
-    if (responseEvent.status === 200) {
-      yield put(user.getEventFetch(true));
-    }
   }
-  yield put(user.getEventFetch(true));
 }
 
 function* _getProfile(): any {
@@ -102,6 +92,14 @@ function* _getPatchData(action: any): any {
     );
   }
 }
+
+function* _updateEventDate(action: any): any {
+  const id = action.payload;
+  const updated = yield userService.patchEvent(id);
+  if (updated.status === 200) {
+    yield put(user.patchResponse({ updated: true, patchResponse: updated }));
+  }
+}
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
   Allows concurrent fetches of user.
@@ -115,7 +113,7 @@ function* mainSaga() {
   yield takeEvery(user.createEvent, _createEvent);
   yield takeEvery(user.getProfile, _getProfile);
   yield takeEvery(user.getPatchData, _getPatchData);
-  // yield takeEvery(user.patchResponse,)
+  yield takeEvery(user.updateEvent, _updateEventDate);
 }
 
 export default mainSaga;

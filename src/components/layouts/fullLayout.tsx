@@ -11,6 +11,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { getProfile, logOut } from "@/store/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
+import { Toaster } from "../ui/toaster";
 import { useEffect } from "react";
 
 const FullLayout = (): JSX.Element => {
@@ -70,6 +71,7 @@ const FullLayout = (): JSX.Element => {
         </MenubarMenu>
       </Menubar>
       <Outlet></Outlet>
+      <Toaster />
       <footer className="text-white text-center  p-8">
         <p>Copyright 2024 All rights reserved</p>
       </footer>

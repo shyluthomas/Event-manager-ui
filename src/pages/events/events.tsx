@@ -7,18 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-// import { OpenEventForm } from "./OpenEventForm";
-import {
-  getEventFetch,
-  getPatchData,
-  getProfile,
-  patchResponse,
-} from "@/store/reducers/userReducer";
+import { getEventFetch, getPatchData } from "@/store/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import OpenEventForm from "./openEventForm";
+import { toast } from "@/components/ui/use-toast";
 
 const Events = () => {
   const dispatch = useAppDispatch();
@@ -27,9 +22,17 @@ const Events = () => {
   }, []);
 
   const data = useAppSelector((state) => state.userReducer.eventData);
-  console.log("dataEVENT", data);
+  const message = useAppSelector((state) => state.userReducer.message);
+  useEffect(() => {
+    if (message.status == true) {
+      toast({
+        title: "Success",
+        description: message.body,
+      });
+    }
+  }, [message]);
   const eventList = data.event;
-  console.log(data.event.event);
+
   const [eventForm, setEventForm] = useState(false);
 
   const deleteEvent = () => {
@@ -38,7 +41,6 @@ const Events = () => {
 
   const editEvent = (id: string) => {
     dispatch(getPatchData(id));
-    console.log(id);
   };
 
   return (
@@ -91,7 +93,6 @@ const Events = () => {
                       onClick={() => {
                         editEvent(e.id);
                         setEventForm(true);
-                        editEvent(e.id);
                       }}
                     >
                       EDIT

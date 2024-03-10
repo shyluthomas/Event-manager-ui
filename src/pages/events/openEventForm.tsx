@@ -1,30 +1,24 @@
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "../../components/ui/alert-dialog";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
 import { Button } from "@/components/ui/button";
-import { EventCreation } from "@/types/event";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createEvent } from "@/store/reducers/userReducer";
 import { useForm } from "react-hook-form";
-import { userService } from "@/services";
 
 interface OpenEventFormProps {
   eventForm: boolean;
   setEventForm: (a: boolean) => void;
 }
 function OpenEventForm({ eventForm, setEventForm }: OpenEventFormProps) {
-  console.log("eventForm", eventForm);
   const {
     register,
     handleSubmit,
@@ -35,7 +29,6 @@ function OpenEventForm({ eventForm, setEventForm }: OpenEventFormProps) {
   const dispatch = useAppDispatch();
 
   const submitEvent = (data: any) => {
-    console.log("dddsubmitFORM", data);
     dispatch(createEvent(data));
     setEventForm(false);
     reset();
@@ -86,7 +79,7 @@ function OpenEventForm({ eventForm, setEventForm }: OpenEventFormProps) {
             placeholder="Event Card Image"
             {...register("eventCardImage", { required: true })}
           />
-          {/* <Label htmlFor="ownerId">Owner Id</Label> */}
+
           <Input
             id="ownerId"
             placeholder="Owner Id"
@@ -131,14 +124,7 @@ function OpenEventForm({ eventForm, setEventForm }: OpenEventFormProps) {
             >
               Cancel
             </AlertDialogCancel>
-            {/* <AlertDialogAction
-              type="submit"
-              onClick={() => {
-                ;
-              }}
-            > */}
-            {/* Create
-            </AlertDialogAction> */}
+
             <Button type="submit">Create</Button>
           </AlertDialogFooter>
         </form>

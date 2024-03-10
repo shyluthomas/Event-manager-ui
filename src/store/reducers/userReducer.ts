@@ -7,6 +7,7 @@ const initialState = {
   userCreation: { status: "", user: {} },
   userLogin: { username: "", password: "" },
   dialog: { status: false, message: "" },
+  message: { status: false, body: "" },
   eventData: {
     event: {
       event: [
@@ -58,7 +59,31 @@ const initialState = {
   },
   patchResponse: {
     updated: false,
-    patchResponse: {},
+    patchResponse: {
+      data: {
+        event: {
+          id: "",
+          createdAt: "",
+          description: "",
+          eventCardImage: "",
+          eventCategoryId: "",
+          eventItenary: [
+            {
+              schedule: "",
+              description: "",
+            },
+          ],
+          published: "",
+          ticketTotalCount: "",
+          title: "",
+          updatedAt: "",
+          status: "",
+        },
+      },
+    },
+  },
+  idData: {
+    id: "",
   },
 };
 
@@ -102,8 +127,13 @@ export const UserSlice = createSlice({
       state.getPatchEvent = action.payload;
     },
     patchResponse: (state, action) => {
-      console.log("PATCHstate", state);
       state.patchResponse = action.payload;
+    },
+    updateEvent: (state, action) => {
+      state.idData = action.payload;
+    },
+    setMessage: (state, action) => {
+      state.message = action.payload;
     },
   },
 });
@@ -122,5 +152,7 @@ export const {
   getProfile,
   getPatchData,
   patchResponse,
+  updateEvent,
+  setMessage,
 } = UserSlice.actions;
 export default UserSlice.reducer;
