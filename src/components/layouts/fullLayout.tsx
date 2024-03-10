@@ -23,9 +23,6 @@ const FullLayout = (): JSX.Element => {
     dispatch(getProfile());
   }, []);
 
-  // const data2 = useAppSelector((state) => state.userReducer.getProfile);
-
-  // const ownerId = data2.profile.data.user.id;
   return (
     <div className="bg-black h-fit">
       <Menubar className="flex justify-between mx-auto h-20 bg-stone-950 sticky top-0">
