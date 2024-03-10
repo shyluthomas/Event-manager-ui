@@ -7,6 +7,84 @@ const initialState = {
   userCreation: { status: "", user: {} },
   userLogin: { username: "", password: "" },
   dialog: { status: false, message: "" },
+  message: { status: false, body: "" },
+  eventData: {
+    event: {
+      event: [
+        {
+          id: "",
+          createdAt: "",
+          description: "",
+          eventCardImage: "",
+          eventCategoryId: "",
+          eventItenary: [
+            {
+              schedule: "",
+              description: "",
+            },
+          ],
+          published: "",
+          ticketTotalCount: "",
+          title: "",
+          updatedAt: "",
+          status: "",
+        },
+      ],
+      loading: false,
+    },
+  },
+  eventFetch: true,
+  createEvent: { loading: "", event: {} },
+  getProfile: {
+    profile: {
+      data: {
+        status: "",
+        user: {
+          address: "",
+          avatar: "",
+          dob: "",
+          email: "",
+          id: "",
+          language: "",
+          name: "",
+          phone: "",
+          roleId: "",
+          sex: "",
+        },
+      },
+    },
+  },
+  getPatchEvent: {
+    id: "",
+  },
+  patchResponse: {
+    updated: false,
+    patchResponse: {
+      data: {
+        event: {
+          id: "",
+          createdAt: "",
+          description: "",
+          eventCardImage: "",
+          eventCategoryId: "",
+          eventItenary: [
+            {
+              schedule: "",
+              description: "",
+            },
+          ],
+          published: "",
+          ticketTotalCount: "",
+          title: "",
+          updatedAt: "",
+          status: "",
+        },
+      },
+    },
+  },
+  idData: {
+    id: "",
+  },
 };
 
 export const UserSlice = createSlice({
@@ -32,6 +110,31 @@ export const UserSlice = createSlice({
       state.dialog = action.payload;
     },
     logOut: () => {},
+    getEventFetch: (state, action) => {
+      state.eventFetch = action.payload;
+    },
+    updateEventData: (state, action) => {
+      state.eventData = action.payload;
+    },
+    createEvent: (state, action) => {
+      state.createEvent = action.payload;
+    },
+    getProfile: () => {},
+    getProfileData: (state, action) => {
+      state.getProfile = action.payload;
+    },
+    getPatchData: (state, action) => {
+      state.getPatchEvent = action.payload;
+    },
+    patchResponse: (state, action) => {
+      state.patchResponse = action.payload;
+    },
+    updateEvent: (state, action) => {
+      state.idData = action.payload;
+    },
+    setMessage: (state, action) => {
+      state.message = action.payload;
+    },
   },
 });
 export const {
@@ -42,5 +145,14 @@ export const {
   setLogin,
   setDialog,
   logOut,
+  getEventFetch,
+  updateEventData,
+  createEvent,
+  getProfileData,
+  getProfile,
+  getPatchData,
+  patchResponse,
+  updateEvent,
+  setMessage,
 } = UserSlice.actions;
 export default UserSlice.reducer;

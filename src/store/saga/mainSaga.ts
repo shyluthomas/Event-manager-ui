@@ -2,6 +2,7 @@ import * as user from "../reducers/userReducer";
 
 import { put, takeEvery } from "redux-saga/effects";
 
+import { EventCreation } from "@/types/event";
 import { UserAction } from "@/types/user";
 import helpers from "@/utils/helpers";
 import { userService } from "@/services";
@@ -38,6 +39,10 @@ function* _setLogin(action: UserAction): any {
     //setting auth from the api response
     if (response.status === 200) {
       yield helpers.setAuthToken(response.data.token);
+      const responseProfile = yield userService.getProfile();
+      if (responseProfile.status === 200) {
+        yield put(user.getProfileData({ loading: false, profile: response }));
+      }
       yield put(user.setAuth({ isAuthenticated: true, user: response.data }));
     } else {
       yield put(user.setAuth({ isAuthenticated: false }));
@@ -46,8 +51,54 @@ function* _setLogin(action: UserAction): any {
     yield put(user.setAuth({ isAuthenticated: false }));
   }
 }
+
 function* _logOut() {
   yield helpers.removeAuthToken();
+}
+
+function* _getEventFetch(): any {
+  const response = yield userService.eventDetails();
+
+  if (response.status === 200) {
+    yield put(user.updateEventData({ event: response.data, loading: false }));
+  }
+}
+
+function* _createEvent(action: EventCreation): any {
+  const eventData = action.payload;
+  const response = yield userService.createEvent(eventData);
+  if (response.status === 201) {
+    yield put(
+      user.setMessage({ status: true, body: "New Task has been created.." })
+    );
+    yield put(user.getEventFetch(true));
+  }
+}
+
+function* _getProfile(): any {
+  const response = yield userService.getProfile();
+  if (response.status === 200) {
+    yield put(user.getProfileData({ loading: false, profile: response }));
+  }
+}
+
+function* _getPatchData(action: any): any {
+  const id = action.payload;
+  const getDatabyIdResponse = yield userService.singleEventDetails(id);
+  // const response = yield userService.patchEvent(id);
+  if (getDatabyIdResponse.status === 200) {
+    yield put(
+      user.patchResponse({ updated: true, patchResponse: getDatabyIdResponse })
+    );
+  }
+}
+
+function* _updateEventDate(action: any): any {
+  const id = action.payload;
+  const updated = yield userService.patchEvent(id);
+  if (updated.status === 200) {
+    yield put(user.patchResponse({ updated: true, patchResponse: updated }));
+  }
 }
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
@@ -58,6 +109,11 @@ function* mainSaga() {
   yield takeEvery(user.setNewUser, _setNewUser);
   yield takeEvery(user.setLogin, _setLogin);
   yield takeEvery(user.logOut, _logOut);
+  yield takeEvery(user.getEventFetch, _getEventFetch);
+  yield takeEvery(user.createEvent, _createEvent);
+  yield takeEvery(user.getProfile, _getProfile);
+  yield takeEvery(user.getPatchData, _getPatchData);
+  yield takeEvery(user.updateEvent, _updateEventDate);
 }
 
 export default mainSaga;

@@ -8,14 +8,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menubar, MenubarMenu, MenubarTrigger } from "@radix-ui/react-menubar";
 import { Outlet, useNavigate } from "react-router-dom";
+import { getProfile, logOut } from "@/store/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
-import { logOut } from "@/store/reducers/userReducer";
+import { Toaster } from "../ui/toaster";
+import { useEffect } from "react";
 
 const FullLayout = (): JSX.Element => {
   const user = useAppSelector((state) => state.userReducer.userLogin);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(getProfile());
+  }, []);
+
   return (
     <div className="bg-black h-fit">
       <Menubar className="flex justify-between mx-auto h-20 bg-stone-950 sticky top-0">
@@ -27,7 +34,12 @@ const FullLayout = (): JSX.Element => {
             <MenubarTrigger className="text-white text-xl p-6">
               DASHBOARD
             </MenubarTrigger>
-            <MenubarTrigger className="text-white text-xl p-6">
+            <MenubarTrigger
+              className="text-white text-xl p-6"
+              onClick={() => {
+                navigate("event");
+              }}
+            >
               EVENTS
             </MenubarTrigger>
           </div>
@@ -56,6 +68,7 @@ const FullLayout = (): JSX.Element => {
         </MenubarMenu>
       </Menubar>
       <Outlet></Outlet>
+      <Toaster />
       <footer className="text-white text-center  p-8">
         <p>Copyright 2024 All rights reserved</p>
       </footer>
