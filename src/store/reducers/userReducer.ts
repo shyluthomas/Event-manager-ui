@@ -16,7 +16,7 @@ const initialState = {
           createdAt: "",
           description: "",
           eventCardImage: "",
-          eventCategoryId: "",
+          eventCategoryId: 0,
           eventItenary: [
             {
               schedule: "",
@@ -24,10 +24,12 @@ const initialState = {
             },
           ],
           published: "",
-          ticketTotalCount: "",
+          ticketTotalCount: 0,
           title: "",
           updatedAt: "",
           status: "",
+          ownerId: 6,
+          file: "",
         },
       ],
       loading: false,
@@ -85,6 +87,7 @@ const initialState = {
   idData: {
     id: "",
   },
+  delete: { id: "" },
 };
 
 export const UserSlice = createSlice({
@@ -135,6 +138,9 @@ export const UserSlice = createSlice({
     setMessage: (state, action) => {
       state.message = action.payload;
     },
+    deleteEvent: (state, action) => {
+      state.delete = action.payload;
+    },
   },
 });
 export const {
@@ -154,5 +160,6 @@ export const {
   patchResponse,
   updateEvent,
   setMessage,
+  deleteEvent,
 } = UserSlice.actions;
 export default UserSlice.reducer;
