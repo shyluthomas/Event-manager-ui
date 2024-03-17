@@ -20,8 +20,6 @@ import OpenEventForm from "./openEventForm";
 import { toast } from "@/components/ui/use-toast";
 
 export const initialData = {
-  // id: "",
-  // createdAt: "",
   description: "",
   eventCardImage: "",
   eventCategoryId: 0,
@@ -32,11 +30,8 @@ export const initialData = {
     },
   ],
   ownerId: 6,
-  // published: "",
   ticketTotalCount: 0,
   title: "",
-  // updatedAt: "",
-  // status: "",
   file: "",
 };
 

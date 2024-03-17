@@ -6,17 +6,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../../components/ui/alert-dialog";
-// import { initialData } from "./events";
 import { Controller, DefaultValues, useForm } from "react-hook-form";
-import {
-  createEvent,
-  getPatchData,
-  updateEvent,
-} from "@/store/reducers/userReducer";
+import { createEvent, updateEvent } from "@/store/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
 import { Button } from "@/components/ui/button";
-import { EventCreationPayload } from "@/types/event";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -85,20 +79,13 @@ function OpenEventForm({
   };
   const data2 = useAppSelector((state) => state.userReducer.getProfile);
   const ownerId = data2.profile.data.user.id;
-  // dispatch(getPatchData(ownerId));
-  const getUser = useAppSelector((state) => state.userReducer.patchResponse);
-  console.log(getUser);
+
   return (
     <AlertDialog open={eventForm}>
-      {/* <AlertDialogTrigger></AlertDialogTrigger> */}
       <AlertDialogContent>
         <form onSubmit={handleSubmit(submitEvent)}>
           <AlertDialogHeader>
             <AlertDialogTitle>Create Events</AlertDialogTitle>
-            {/* <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </AlertDialogDescription> */}
           </AlertDialogHeader>
           <Label htmlFor="title">Title</Label>
           <Input
@@ -153,13 +140,13 @@ function OpenEventForm({
           <Input
             id="schedule"
             placeholder="Schedule"
-            {...register("eventItenary.0.schedule", { required: true })}
+            {...register("eventItenary.0?.schedule", { required: true })}
           />
           <Label htmlFor="description">Description</Label>
           <Input
             id="description"
             placeholder="Description"
-            {...register("eventItenary.0.description", { required: true })}
+            {...register("eventItenary.0?.description", { required: true })}
           />
           <Label htmlFor="file">File</Label>
           <Controller
@@ -176,7 +163,6 @@ function OpenEventForm({
                   onChange={(event) => {
                     onChange(event.target.files?.[0]);
                   }}
-                  // {...register("file", { required: true })}
                 />
               );
             }}
@@ -190,7 +176,7 @@ function OpenEventForm({
             >
               Cancel
             </AlertDialogCancel>
-            {/* {formData.title != "" && <Button type="button">Update</Button>} */}
+
             {<Button type="submit">Create</Button>}
           </AlertDialogFooter>
         </form>

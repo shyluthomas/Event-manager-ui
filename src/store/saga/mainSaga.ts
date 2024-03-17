@@ -94,7 +94,6 @@ function* _getPatchData(action: ProfileId): any {
 }
 
 function* _updateEventDate(action: UpdateEventData): any {
-  console.log("action", action);
   const id = action.payload;
   const updated = yield userService.patchEvent(id);
 
@@ -105,7 +104,6 @@ function* _updateEventDate(action: UpdateEventData): any {
 }
 
 function* _deleteEvent(action: ProfileId): any {
-  console.log(action);
   const id = action.payload;
   const updated = yield userService.deleteEvent(id);
   if (updated.status === 200) {
