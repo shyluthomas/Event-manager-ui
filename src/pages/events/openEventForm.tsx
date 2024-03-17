@@ -140,13 +140,13 @@ function OpenEventForm({
           <Input
             id="schedule"
             placeholder="Schedule"
-            {...register("eventItenary.0?.schedule", { required: true })}
+            {...register("eventItenary.0.schedule", { required: true })}
           />
           <Label htmlFor="description">Description</Label>
           <Input
             id="description"
             placeholder="Description"
-            {...register("eventItenary.0?.description", { required: true })}
+            {...register("eventItenary.0.description", { required: true })}
           />
           <Label htmlFor="file">File</Label>
           <Controller

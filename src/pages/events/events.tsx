@@ -57,7 +57,7 @@ const Events = () => {
 
   const [eventForm, setEventForm] = useState(false);
 
-  const deleteEvents = (id: any) => {
+  const deleteEvents = (id: number) => {
     dispatch(deleteEvent(id));
   };
 
@@ -102,7 +102,7 @@ const Events = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {eventList.event.map((e) => {
+          {eventList?.event.map((e) => {
             return (
               <TableRow key={e.id}>
                 <TableCell>{e.id}</TableCell>
@@ -119,7 +119,7 @@ const Events = () => {
                     <Button
                       onClick={() => {
                         setFormData(e);
-                        editEvent(e.id);
+                        editEvent(e.id!);
                         setEventForm(true);
                       }}
                     >
@@ -127,7 +127,7 @@ const Events = () => {
                     </Button>
                     <Button
                       onClick={() => {
-                        deleteEvents(e.id);
+                        deleteEvents(e.id!);
                       }}
                     >
                       DELETE

@@ -1,6 +1,6 @@
 import * as user from "../reducers/userReducer";
 
-import { EventCreation, ProfileId, UpdateEventData } from "@/types/event";
+import { EventCreation, Profile, UpdateEventData } from "@/types/event";
 import { put, takeEvery } from "redux-saga/effects";
 
 import { UserAction } from "@/types/user";
@@ -82,7 +82,7 @@ function* _getProfile(): any {
   }
 }
 
-function* _getPatchData(action: ProfileId): any {
+function* _getPatchData(action: Profile): any {
   const id = action.payload;
   const getDatabyIdResponse = yield userService.singleEventDetails(id);
   // const response = yield userService.patchEvent(id);
@@ -103,7 +103,7 @@ function* _updateEventDate(action: UpdateEventData): any {
   }
 }
 
-function* _deleteEvent(action: ProfileId): any {
+function* _deleteEvent(action: Profile): any {
   const id = action.payload;
   const updated = yield userService.deleteEvent(id);
   if (updated.status === 200) {

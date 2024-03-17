@@ -12,7 +12,7 @@ const initialState = {
     event: {
       event: [
         {
-          id: "",
+          id: undefined,
           createdAt: "",
           description: "",
           eventCardImage: "",
@@ -87,7 +87,7 @@ const initialState = {
   idData: {
     id: "",
   },
-  delete: { id: "" },
+  delete: { id: undefined },
 };
 
 export const UserSlice = createSlice({
