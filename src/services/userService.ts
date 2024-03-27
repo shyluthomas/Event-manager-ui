@@ -27,11 +27,18 @@ export const userService = {
     return response;
   },
   patchEvent: async (payload: any): Promise<APIResponse> => {
-    const response = await axiosAuth.patch(`${api}`, payload);
+    const response = await axiosAuth.patch(
+      `${api}/event/${payload.id}`,
+      payload
+    );
     return response;
   },
-  singleEventDetails: async (payload: any): Promise<APIResponse> => {
+  singleEventDetails: async (payload: number): Promise<APIResponse> => {
     const response = await axiosAuth.get(`${api}/event/${payload}`);
+    return response;
+  },
+  deleteEvent: async (payload: number): Promise<APIResponse> => {
+    const response = await axiosAuth.delete(`${api}/event/${payload}`);
     return response;
   },
 };

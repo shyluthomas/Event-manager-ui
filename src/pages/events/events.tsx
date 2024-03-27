@@ -7,7 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getEventFetch, getPatchData } from "@/store/reducers/userReducer";
+import {
+  deleteEvent,
+  getEventFetch,
+  getPatchData,
+} from "@/store/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { useEffect, useState } from "react";
 
@@ -15,11 +19,29 @@ import { Button } from "@/components/ui/button";
 import OpenEventForm from "./openEventForm";
 import { toast } from "@/components/ui/use-toast";
 
+export const initialData = {
+  description: "",
+  eventCardImage: "",
+  eventCategoryId: 0,
+  eventItenary: [
+    {
+      schedule: "",
+      description: "",
+    },
+  ],
+  ownerId: 6,
+  ticketTotalCount: 0,
+  title: "",
+  file: "",
+};
+
 const Events = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getEventFetch(true));
   }, []);
+
+  const [formData, setFormData] = useState(initialData);
 
   const data = useAppSelector((state) => state.userReducer.eventData);
   const message = useAppSelector((state) => state.userReducer.message);
@@ -35,8 +57,8 @@ const Events = () => {
 
   const [eventForm, setEventForm] = useState(false);
 
-  const deleteEvent = () => {
-    console.log("TBDDD");
+  const deleteEvents = (id: number) => {
+    dispatch(deleteEvent(id));
   };
 
   const editEvent = (id: string) => {
@@ -48,6 +70,7 @@ const Events = () => {
       <div className=" text-xl p-6 text-right bg-white">
         <Button
           onClick={() => {
+            setFormData(initialData);
             setEventForm(true);
           }}
         >
@@ -55,7 +78,11 @@ const Events = () => {
         </Button>
       </div>
       {eventForm && (
-        <OpenEventForm eventForm={eventForm} setEventForm={setEventForm} />
+        <OpenEventForm
+          eventForm={eventForm}
+          setEventForm={setEventForm}
+          formData={formData}
+        />
       )}
       <Table>
         <TableCaption>A list of your events.</TableCaption>
@@ -75,9 +102,9 @@ const Events = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {eventList.event.map((e) => {
+          {eventList?.event.map((e) => {
             return (
-              <TableRow>
+              <TableRow key={e.id}>
                 <TableCell>{e.id}</TableCell>
                 <TableCell>{e.title}</TableCell>
                 <TableCell>{e.description}</TableCell>
@@ -91,7 +118,8 @@ const Events = () => {
                   <div className="space-x-2">
                     <Button
                       onClick={() => {
-                        editEvent(e.id);
+                        setFormData(e);
+                        editEvent(e.id!);
                         setEventForm(true);
                       }}
                     >
@@ -99,7 +127,7 @@ const Events = () => {
                     </Button>
                     <Button
                       onClick={() => {
-                        deleteEvent();
+                        deleteEvents(e.id!);
                       }}
                     >
                       DELETE

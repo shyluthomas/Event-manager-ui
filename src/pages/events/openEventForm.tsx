@@ -6,53 +6,91 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "../../components/ui/alert-dialog";
+import { Controller, DefaultValues, useForm } from "react-hook-form";
+import { createEvent, updateEvent } from "@/store/reducers/userReducer";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createEvent } from "@/store/reducers/userReducer";
-import { useForm } from "react-hook-form";
 
 interface OpenEventFormProps {
   eventForm: boolean;
   setEventForm: (a: boolean) => void;
+  formData: any;
 }
-function OpenEventForm({ eventForm, setEventForm }: OpenEventFormProps) {
+function OpenEventForm({
+  eventForm,
+  setEventForm,
+  formData,
+}: OpenEventFormProps) {
+  const id = formData?.id;
+  const initialData: DefaultValues<any> = {
+    description: formData.description ? formData.description : "",
+    eventCardImage: formData.eventCardImage ? formData.eventCardImage : "",
+    eventCategoryId: formData.eventCategoryId ? formData.eventCategoryId : "",
+    eventItenary: formData.eventItenary
+      ? formData.eventItenary
+      : [
+          {
+            schedule: "",
+            description: "",
+          },
+        ],
+    ownerId: 6,
+
+    ticketTotalCount: formData.ticketTotalCount
+      ? formData.ticketTotalCount
+      : "",
+    title: formData.title ? formData.title : "",
+
+    file: formData.file ? formData.file : "",
+  };
+
+  const file2Base64 = (file: File): Promise<string> => {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result?.toString() || "");
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: initialData });
 
   const dispatch = useAppDispatch();
 
-  const submitEvent = (data: any) => {
-    dispatch(createEvent(data));
+  const submitEvent = async (data: any) => {
+    const image = await file2Base64(data.fileupload);
+    if (formData.title === "") {
+      dispatch(createEvent({ ...data, image }));
+    } else {
+      dispatch(updateEvent({ ...data, id }));
+    }
+
     setEventForm(false);
     reset();
   };
   const data2 = useAppSelector((state) => state.userReducer.getProfile);
-
   const ownerId = data2.profile.data.user.id;
+
   return (
     <AlertDialog open={eventForm}>
-      {/* <AlertDialogTrigger></AlertDialogTrigger> */}
       <AlertDialogContent>
         <form onSubmit={handleSubmit(submitEvent)}>
           <AlertDialogHeader>
             <AlertDialogTitle>Create Events</AlertDialogTitle>
-            {/* <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </AlertDialogDescription> */}
           </AlertDialogHeader>
           <Label htmlFor="title">Title</Label>
           <Input
             id="title"
             placeholder="Title"
-            // value={}
             {...register("title", { required: true })}
           />
           <Label htmlFor="description">Description</Label>
@@ -102,20 +140,34 @@ function OpenEventForm({ eventForm, setEventForm }: OpenEventFormProps) {
           <Input
             id="schedule"
             placeholder="Schedule"
-            {...register("eventItenary[0].schedule", { required: true })}
+            {...register("eventItenary.0.schedule", { required: true })}
           />
           <Label htmlFor="description">Description</Label>
           <Input
             id="description"
             placeholder="Description"
-            {...register("eventItenary[0].description", { required: true })}
+            {...register("eventItenary.0.description", { required: true })}
           />
           <Label htmlFor="file">File</Label>
-          <Input
-            id="file"
-            placeholder="File"
-            {...register("file", { required: true })}
+          <Controller
+            name={"fileupload"}
+            control={control}
+            render={({ field: { value, onChange, ...field } }) => {
+              return (
+                <Input
+                  {...field}
+                  id="file"
+                  type="file"
+                  placeholder="File"
+                  value={value?.fileName}
+                  onChange={(event) => {
+                    onChange(event.target.files?.[0]);
+                  }}
+                />
+              );
+            }}
           />
+
           <AlertDialogFooter>
             <AlertDialogCancel
               onClick={() => {
@@ -125,7 +177,7 @@ function OpenEventForm({ eventForm, setEventForm }: OpenEventFormProps) {
               Cancel
             </AlertDialogCancel>
 
-            <Button type="submit">Create</Button>
+            {<Button type="submit">Create</Button>}
           </AlertDialogFooter>
         </form>
       </AlertDialogContent>

@@ -1,8 +1,8 @@
 import * as user from "../reducers/userReducer";
 
+import { EventCreation, Profile, UpdateEventData } from "@/types/event";
 import { put, takeEvery } from "redux-saga/effects";
 
-import { EventCreation } from "@/types/event";
 import { UserAction } from "@/types/user";
 import helpers from "@/utils/helpers";
 import { userService } from "@/services";
@@ -82,7 +82,7 @@ function* _getProfile(): any {
   }
 }
 
-function* _getPatchData(action: any): any {
+function* _getPatchData(action: Profile): any {
   const id = action.payload;
   const getDatabyIdResponse = yield userService.singleEventDetails(id);
   // const response = yield userService.patchEvent(id);
@@ -93,11 +93,24 @@ function* _getPatchData(action: any): any {
   }
 }
 
-function* _updateEventDate(action: any): any {
+function* _updateEventDate(action: UpdateEventData): any {
   const id = action.payload;
   const updated = yield userService.patchEvent(id);
+
   if (updated.status === 200) {
     yield put(user.patchResponse({ updated: true, patchResponse: updated }));
+    yield put(user.getEventFetch(true));
+  }
+}
+
+function* _deleteEvent(action: Profile): any {
+  const id = action.payload;
+  const updated = yield userService.deleteEvent(id);
+  if (updated.status === 200) {
+    yield put(user.getEventFetch(true));
+    yield put(
+      user.setMessage({ status: true, body: `Event ${id} has been deleted` })
+    );
   }
 }
 /*
@@ -114,6 +127,7 @@ function* mainSaga() {
   yield takeEvery(user.getProfile, _getProfile);
   yield takeEvery(user.getPatchData, _getPatchData);
   yield takeEvery(user.updateEvent, _updateEventDate);
+  yield takeEvery(user.deleteEvent, _deleteEvent);
 }
 
 export default mainSaga;
